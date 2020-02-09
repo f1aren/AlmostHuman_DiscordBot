@@ -1,11 +1,10 @@
-package cmds.Administration;
+package cmds.administration;
 
-import Core.Main;
+import core.Main;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.List;
@@ -18,14 +17,14 @@ public class MoveToVChannelCommand extends Command {
         this.help = "переместить пользователя в другой голосовой канал";
         this.arguments = "<User> <VoiceChannel>";
         this.botPermissions = new Permission[] {Permission.VOICE_MOVE_OTHERS};
+        this.userPermissions = new Permission[] {Permission.VOICE_MOVE_OTHERS};
         this.guildOnly = true;
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        String[] argsData = event.getArgs().split("\\s+");
+        String[] argsData = event.getArgs().split("\\s+", 2);
         Member member;
-        User user;
         VoiceChannel voiceChannel = null;
 
 
@@ -34,7 +33,7 @@ public class MoveToVChannelCommand extends Command {
                 String userId = argsData[0].replaceAll("[^0-9]", "");
                 member = event.getGuild().getMemberById(userId);
 
-                List<VoiceChannel> listVChannels = event.getGuild().getVoiceChannelsByName(argsData[1], false);
+                List<VoiceChannel> listVChannels = event.getGuild().getVoiceChannelsByName(argsData[1], true);
 
                 if (listVChannels.size() != 0) {
                     voiceChannel = listVChannels.get(0);
@@ -47,7 +46,7 @@ public class MoveToVChannelCommand extends Command {
             } else if (argsData[0].matches("(.{2,32})#(\\d{4})")) {
                 member = event.getGuild().getMemberByTag(argsData[0]);
                 if (member != null) {
-                    List<VoiceChannel> listVChannels = event.getGuild().getVoiceChannelsByName(argsData[1], false);
+                    List<VoiceChannel> listVChannels = event.getGuild().getVoiceChannelsByName(argsData[1], true);
 
                     if (listVChannels.size() != 0) {
                         voiceChannel = listVChannels.get(0);
@@ -62,11 +61,11 @@ public class MoveToVChannelCommand extends Command {
 
             } else {
 
-                List<Member> membersList = event.getGuild().getMembersByName(argsData[0], false);
+                List<Member> membersList = event.getGuild().getMembersByName(argsData[0], true);
 
                 if (membersList.size() != 0) {
                     member = membersList.get(0);
-                    List<VoiceChannel> listVChannels = event.getGuild().getVoiceChannelsByName(argsData[1], false);
+                    List<VoiceChannel> listVChannels = event.getGuild().getVoiceChannelsByName(argsData[1], true);
 
                     if (listVChannels.size() != 0) {
                         voiceChannel = listVChannels.get(0);
@@ -89,7 +88,7 @@ public class MoveToVChannelCommand extends Command {
     private  void moveMemberToVChannel (Member member, VoiceChannel voiceChannel, CommandEvent event) {
         if (member.getVoiceState().inVoiceChannel()) {
             member.getGuild().moveVoiceMember(member, voiceChannel).queue();
-            event.reply(member.getEffectiveName() + " был перемещен");
+            event.reply(member.getUser().getAsTag() + " был перемещен");
         } else {
             event.reply("Пользователь сейчас не находится в голосовом канале");
         }

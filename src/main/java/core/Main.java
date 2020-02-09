@@ -1,10 +1,8 @@
-package Core;
+package core;
 
 import cmds.*;
-import cmds.Administration.MoveToVChannelCommand;
-import cmds.Administration.MuteCommand;
-import cmds.Administration.UnmuteCommand;
-import cmds.Music.*;
+import cmds.administration.*;
+import cmds.music.*;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jdautilities.examples.command.PingCommand;
@@ -53,10 +51,14 @@ public class Main {
                 new CoinCommand(),
                 new SaysCommand(),
                 new PingCommand(),
+                // administration
+                new AddRoleCommand(),
+                new RemoveRoleCommand(),
                 new MuteCommand(),
                 new UnmuteCommand(),
                 new MoveToVChannelCommand(),
-                // Music
+
+                // music
                 new MplayCommand(),
                 new MskipCommand(),
                 new MstopCommand(),

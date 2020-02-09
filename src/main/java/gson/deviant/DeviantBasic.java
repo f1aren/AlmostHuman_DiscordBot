@@ -1,4 +1,4 @@
-package Gson.Deviant;
+package gson.deviant;
 
 import java.util.ArrayList;
 

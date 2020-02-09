@@ -1,4 +1,4 @@
-package Gson.Deviant;
+package gson.deviant;
 
 public class AccessTokenData {
     public String access_token;

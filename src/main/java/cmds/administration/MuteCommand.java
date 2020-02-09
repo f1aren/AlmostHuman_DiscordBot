@@ -1,11 +1,10 @@
-package cmds.Administration;
+package cmds.administration;
 
-import Core.Main;
+import core.Main;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
 
 
 public class MuteCommand extends Command {
@@ -14,14 +13,14 @@ public class MuteCommand extends Command {
         this.help = "заглушить пользователя";
         this.arguments = "<user>";
         this.botPermissions = new Permission[] {Permission.VOICE_MUTE_OTHERS};
+        this.userPermissions = new Permission[] {Permission.VOICE_MUTE_OTHERS};
         this.guildOnly = true;
     }
 
     @Override
     protected void execute(CommandEvent event) {
 
-        String[] argsData = event.getArgs().split("\\s+");
-        User user;
+        String[] argsData = event.getArgs().split("\\s+", 1);
         Member member;
 
         if (argsData.length == 1 && !event.getArgs().isEmpty()) {
@@ -40,7 +39,7 @@ public class MuteCommand extends Command {
             } else { // только по нику
 
                 try {
-                    member = event.getGuild().getMembersByName(argsData[0], false).get(0);
+                    member = event.getGuild().getMembersByName(argsData[0], true).get(0);
                     muteMember(member, event);
                 } catch (IndexOutOfBoundsException e) {
                     event.reply("Пользователь не найден");
@@ -55,6 +54,6 @@ public class MuteCommand extends Command {
 
     private void muteMember (Member member, CommandEvent event) {
         member.mute(true).queue();
-        event.reply(member.getEffectiveName() + " заглушен");
+        event.reply(member.getUser().getAsTag() + " заглушен");
     }
 }

@@ -1,4 +1,4 @@
-package cmds.Music.core;
+package cmds.music.core;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;

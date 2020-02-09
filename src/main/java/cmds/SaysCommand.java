@@ -1,14 +1,8 @@
 package cmds;
 
-import Core.Main;
+import core.Main;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Message;
-
-import java.awt.*;
 
 public class SaysCommand extends Command {
 

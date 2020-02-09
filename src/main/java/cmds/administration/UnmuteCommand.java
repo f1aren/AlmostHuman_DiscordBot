@@ -1,25 +1,25 @@
-package cmds.Administration;
+package cmds.administration;
 
-import Core.Main;
-import cmds.Music.core.Music;
+import core.Main;
+import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
 
-public class UnmuteCommand extends Music {
+public class UnmuteCommand extends Command {
 
     public UnmuteCommand () {
         this.name = "unmute";
         this.help = "разглушить пользователя";
         this.arguments = "<user>";
         this.botPermissions = new Permission[] {Permission.VOICE_MUTE_OTHERS};
+        this.userPermissions = new Permission[] {Permission.VOICE_MUTE_OTHERS};
         this.guildOnly = true;
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        String[] argsData = event.getArgs().split("\\s+");
+        String[] argsData = event.getArgs().split("\\s+", 1);
         Member member;
 
 
@@ -40,7 +40,7 @@ public class UnmuteCommand extends Music {
             } else {
 
                 try {
-                    member = event.getGuild().getMembersByName(argsData[0], false).get(0);
+                    member = event.getGuild().getMembersByName(argsData[0], true).get(0);
                     unmuteMember(member, event);
                 } catch (IndexOutOfBoundsException e) {
                     event.reply("Пользователь не найден");
@@ -55,6 +55,6 @@ public class UnmuteCommand extends Music {
 
     private void unmuteMember (Member member, CommandEvent event) {
         member.mute(false).queue();
-        event.reply(member.getEffectiveName() + " разглушен");
+        event.reply(member.getUser().getAsTag() + " разглушен");
     }
 }

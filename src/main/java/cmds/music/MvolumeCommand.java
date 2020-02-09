@@ -1,7 +1,7 @@
-package cmds.Music;
+package cmds.music;
 
-import cmds.Music.core.GuildMusicManager;
-import cmds.Music.core.Music;
+import cmds.music.core.GuildMusicManager;
+import cmds.music.core.Music;
 import com.jagrosh.jdautilities.command.CommandEvent;
 
 public class MvolumeCommand extends Music {

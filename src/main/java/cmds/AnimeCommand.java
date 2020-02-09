@@ -1,8 +1,8 @@
 package cmds;
 
-import Core.Keys;
-import Gson.Deviant.AccessTokenData;
-import Gson.Deviant.DeviantBasic;
+import core.Keys;
+import gson.deviant.AccessTokenData;
+import gson.deviant.DeviantBasic;
 import com.google.gson.Gson;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
@@ -42,7 +42,7 @@ public class AnimeCommand extends Command {
         AccessTokenData jsonData = null;
         DeviantBasic deviantData = null;
 
-        //Core.Deviant.results resultsData = null;
+        //core.deviant.results resultsData = null;
         int offset = 0;//(int) (Math.random() * 40);
         int maxResult = 0;
         int rand = 0;

@@ -1,15 +1,10 @@
-package cmds.Music;
+package cmds.music;
 
-import Core.Main;
-import cmds.Music.core.GuildMusicManager;
-import cmds.Music.core.Music;
-import cmds.Music.core.TrackScheduler;
-import com.jagrosh.jdautilities.command.Command;
+import core.Main;
+import cmds.music.core.GuildMusicManager;
+import cmds.music.core.Music;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -21,15 +16,12 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MplayCommand extends Music {
 
     public MplayCommand () {
         this.name = "mplay";
-        this.help = "поставить музыку (YouTube, Vimeo)";
-        this.arguments = "<URL трека / YT плейлиста>";
+        this.help = "поставить музыку (YouTube, BandCamp)";
+        this.arguments = "<URL трека или плейлиста / название трека из YouTube>";
         this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
         this.guildOnly = true;
 
@@ -46,10 +38,17 @@ public class MplayCommand extends Music {
     protected void execute(CommandEvent event) {
         if (!event.getArgs().isEmpty()) {
             Member member = event.getGuild().getMember(event.getAuthor());
-            long voiceId = member.getVoiceState().getChannel().getIdLong();
-            VoiceChannel voiceChannel = event.getGuild().getVoiceChannelById(voiceId);
 
-            loadAndPlay(event.getTextChannel(), event.getArgs(), voiceChannel);
+            if (member.getVoiceState().inVoiceChannel()) {
+                long voiceId = member.getVoiceState().getChannel().getIdLong();
+                VoiceChannel voiceChannel = event.getGuild().getVoiceChannelById(voiceId);
+
+                // если не ссылка, то добавляем префикс поиска в yt
+                loadAndPlay(event.getTextChannel(), event.getArgs().startsWith("http") ? event.getArgs() : "ytsearch: " + event.getArgs(), voiceChannel);
+            } else {
+                event.reply(member.getAsMention() + " ты сейчас не находишься в голосовом канале");
+            }
+
         } else {
             event.reply(Main.getPrefix() + this.name + " " + this.arguments);
         }
@@ -78,10 +77,13 @@ public class MplayCommand extends Music {
                     firstTrack = playlist.getTracks().get(0);
                 }*/
 
-
-                playPlaylist(channel.getGuild(), musicManager, playlist, voiceChannel);
-
-                channel.sendMessage("Добавил в очередь: " + playlist.getTracks().get(0).getInfo().title + " (Плейлист: " + playlist.getName() + ")").queue();
+                if(trackUrl.startsWith("ytsearch: ")) { // если происходит поиск трека по названию, то берем первый по списку и добавляем его в очередь
+                    play(channel.getGuild(), musicManager, playlist.getTracks().get(0), voiceChannel);
+                    channel.sendMessage("Добавил в очередь: " + playlist.getTracks().get(0).getInfo().title).queue();
+                } else {
+                    playPlaylist(channel.getGuild(), musicManager, playlist, voiceChannel);
+                    channel.sendMessage("Добавил в очередь плейлист: " + playlist.getName()).queue();
+                }
 
             }
 

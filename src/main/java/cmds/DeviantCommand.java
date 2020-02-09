@@ -1,17 +1,15 @@
 package cmds;
 
-import Core.Keys;
-import Gson.Deviant.DeviantBasic;
-import Gson.Deviant.AccessTokenData;
+import core.Keys;
+import gson.deviant.DeviantBasic;
+import gson.deviant.AccessTokenData;
 import com.google.gson.Gson;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
-import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageInputStream;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

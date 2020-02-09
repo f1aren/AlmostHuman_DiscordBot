@@ -1,7 +1,5 @@
-package cmds.Music.core;
+package cmds.music.core;
 
-import Core.Keys;
-import Core.Main;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -11,8 +9,6 @@ import net.dv8tion.jda.api.entities.Guild;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-
-import static com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason.*;
 
 /**
  * This class schedules tracks for the audio player. It contains the queue of tracks.
@@ -104,13 +100,18 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public String getCurrentTrack() {
         String track;
-        long hour, min, sec, ms;
+        long hour, min, sec, ms, durationMs, durationHour, durationMin, durationSec;
         ms = player.getPlayingTrack().getPosition();
         hour = TimeUnit.MILLISECONDS.toHours(ms);
         min = TimeUnit.MILLISECONDS.toMinutes(ms) % 60;
         sec = TimeUnit.MILLISECONDS.toSeconds(ms) % 60;
 
-        String currentTimePosition = String.format("[%02dч:%02dм:%02dс]", hour, min, sec);
+        durationMs = player.getPlayingTrack().getDuration();
+        durationHour = TimeUnit.MILLISECONDS.toHours(durationMs);
+        durationMin = TimeUnit.MILLISECONDS.toMinutes(durationMs) % 60;
+        durationSec = TimeUnit.MILLISECONDS.toSeconds(durationMs) % 60;
+
+        String currentTimePosition = String.format("[%02d:%02d:%02d : %02d:%02d:%02d]", hour, min, sec, durationHour, durationMin, durationSec);
 
         track = player.getPlayingTrack().getInfo().title + " " + currentTimePosition + " "
                 + " \n" + player.getPlayingTrack().getInfo().uri;

@@ -1,10 +1,10 @@
-package cmds.Music.core;
+package cmds.music.core;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.HashMap;
@@ -12,13 +12,9 @@ import java.util.Map;
 
 public class Music extends Command {
 
-    protected static final AudioPlayerManager audioPlayerManager = new DefaultAudioPlayerManager();
+    protected static AudioPlayerManager audioPlayerManager = new DefaultAudioPlayerManager();
 
     protected static final Map<Long, GuildMusicManager> musicManagers = new HashMap<>();
-
-    public Music() {
-        AudioSourceManagers.registerRemoteSources(audioPlayerManager);
-    }
 
     @Override
     protected void execute(CommandEvent event) {

@@ -1,20 +1,18 @@
 package cmds;
 
-import Core.Main;
+import core.Main;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
 
 import java.awt.*;
 
 public class AnnounceCommand extends Command {
     public AnnounceCommand () {
         this.name = "announce";
-        this.help = "сделать обявление";
+        this.help = "сделать объявление";
         this.arguments = "<message>";
         this.botPermissions = new Permission[]{Permission.MESSAGE_MENTION_EVERYONE};
         this.guildOnly = false;
